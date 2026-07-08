@@ -1,4 +1,4 @@
-const API_URL = 'https://atlas-portal-backend.onrender.com/api';
+const API_URL = 'https://atlas-portal-exln.onrender.com/api';
 
 // Connexion
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
