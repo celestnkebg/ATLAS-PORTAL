@@ -1,1 +1,25 @@
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATLAS Portal – Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🖤 Tableau de bord</h1>
+            <p>Bienvenue, <span id="userEmail"></span> 👋</p>
+            <hr>
+            <div id="info">
+                <p><strong>Token :</strong> <span id="userToken">Aucun</span></p>
+                <p><strong>Statut :</strong> <span id="userStatus">Non activé</span></p>
+            </div>
+            <a href="activate.html" class="btn">Activer un token</a>
+            <button onclick="logout()" class="btn btn-danger">Se déconnecter</button>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
