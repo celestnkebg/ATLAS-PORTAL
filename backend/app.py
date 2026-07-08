@@ -10,6 +10,9 @@ app = Flask(__name__)
 CORS(app)
 
 DATA_FILE = "data/users.json"
+SYNC_FILE = "data/sync_stats.json"
+
+# ========== FONCTIONS ==========
 
 def load_users():
     if not os.path.exists(DATA_FILE):
@@ -38,6 +41,36 @@ def home():
 @app.route("/api/test")
 def test():
     return {"status": "ok", "message": "API is working"}
+
+# ========== SYNC : ACCEPTE GET ET POST ==========
+@app.route("/api/sync", methods=["GET", "POST"])
+def sync_data():
+    if request.method == "GET":
+        return jsonify({
+            "status": "ok",
+            "message": "Sync endpoint is ready. Use POST to send data.",
+            "last_sync": get_last_sync()
+        })
+
+    data = request.json
+    if not data:
+        return jsonify({"error": "Données manquantes"}), 400
+
+    os.makedirs(os.path.dirname(SYNC_FILE), exist_ok=True)
+    with open(SYNC_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
+    print(f"📥 Données reçues : {data.get('type', 'inconnu')}")
+    return jsonify({"success": True, "message": "Données synchronisées"}), 200
+
+def get_last_sync():
+    if not os.path.exists(SYNC_FILE):
+        return None
+    with open(SYNC_FILE, "r") as f:
+        data = json.load(f)
+    return data.get("last_update", None)
+
+# ========== AUTHENTIFICATION ==========
 
 @app.route("/api/login", methods=["POST"])
 def login():
