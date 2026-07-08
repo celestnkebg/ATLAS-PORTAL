@@ -7,12 +7,12 @@ import secrets
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+
+# ✅ CORS CORRECT
+CORS(app, origins="*")  # ou ["https://atlas-portal-frontend.onrender.com"]
 
 DATA_FILE = "data/users.json"
 SYNC_FILE = "data/sync_stats.json"
-
-# ========== FONCTIONS ==========
 
 def load_users():
     if not os.path.exists(DATA_FILE):
@@ -32,8 +32,6 @@ def find_user_by_email(email):
             return u
     return None
 
-# ========== ROUTES ==========
-
 @app.route("/")
 def home():
     return "✅ ATLAS Portal API is running!"
@@ -42,15 +40,10 @@ def home():
 def test():
     return {"status": "ok", "message": "API is working"}
 
-# ========== SYNC : ACCEPTE GET ET POST ==========
 @app.route("/api/sync", methods=["GET", "POST"])
 def sync_data():
     if request.method == "GET":
-        return jsonify({
-            "status": "ok",
-            "message": "Sync endpoint is ready. Use POST to send data.",
-            "last_sync": get_last_sync()
-        })
+        return jsonify({"status": "ok", "message": "Sync endpoint is ready. Use POST to send data."})
 
     data = request.json
     if not data:
@@ -60,17 +53,7 @@ def sync_data():
     with open(SYNC_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
-    print(f"📥 Données reçues : {data.get('type', 'inconnu')}")
     return jsonify({"success": True, "message": "Données synchronisées"}), 200
-
-def get_last_sync():
-    if not os.path.exists(SYNC_FILE):
-        return None
-    with open(SYNC_FILE, "r") as f:
-        data = json.load(f)
-    return data.get("last_update", None)
-
-# ========== AUTHENTIFICATION ==========
 
 @app.route("/api/login", methods=["POST"])
 def login():
