@@ -1,1 +1,23 @@
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATLAS Portal – Activation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🔑 Activer ton token</h1>
+            <p>Entre le token reçu par le bot pour lier ton compte au serveur.</p>
+            <input type="text" id="tokenInput" placeholder="Token (ex: CODE-XXXX-XXXX)" style="width:100%;padding:10px;margin:10px 0;">
+            <button onclick="activateToken()" class="btn">Activer</button>
+            <div id="message" class="message"></div>
+            <br>
+            <a href="dashboard.html">⬅ Retour au tableau de bord</a>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
