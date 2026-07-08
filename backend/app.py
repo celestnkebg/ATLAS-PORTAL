@@ -29,6 +29,16 @@ def find_user_by_email(email):
             return u
     return None
 
+# ========== ROUTES ==========
+
+@app.route("/")
+def home():
+    return "✅ ATLAS Portal API is running!"
+
+@app.route("/api/test")
+def test():
+    return {"status": "ok", "message": "API is working"}
+
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.json
