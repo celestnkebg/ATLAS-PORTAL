@@ -13,16 +13,11 @@
             <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="active">Accueil</a>
-                <a href="dashboard.html">Dashboard</a>
+                <a href="login.html">Connexion</a>
                 <a href="bourse.html">Bourse</a>
-                <a href="redeem.html">Activer</a>
+                <a href="activate.html">Activer</a>
             </div>
             <div class="nav-right">
-                <div class="coin-pill">
-                    <span class="coin-dot"></span>
-                    <span id="coinDisplay">0</span>
-                    <span class="muted">coins</span>
-                </div>
                 <button class="nav-toggle" id="navToggle">☰</button>
             </div>
         </div>
@@ -38,7 +33,7 @@
                     Collectionnez, investissez, et suivez l’évolution en temps réel.
                 </p>
                 <div class="hero-cta">
-                    <a href="redeem.html" class="btn btn-primary">Activer un code</a>
+                    <a href="login.html" class="btn btn-primary">Accéder à mon compte</a>
                     <a href="bourse.html" class="btn btn-ghost">Consulter la Bourse</a>
                 </div>
             </div>
@@ -92,30 +87,11 @@
         </div>
     </footer>
 
+    <script src="js/app.js"></script>
     <script>
-        // Navigation mobile
         document.getElementById('navToggle').addEventListener('click', function() {
             document.getElementById('navLinks').classList.toggle('open');
         });
-
-        // Stats simulées (à remplacer par API)
-        async function loadStats() {
-            try {
-                const res = await fetch('/api/stats');
-                const data = await res.json();
-                document.getElementById('nftCount').textContent = data.nfts || 42;
-                document.getElementById('memberCount').textContent = data.members || 128;
-                document.getElementById('serverCount').textContent = data.servers || 8;
-                document.getElementById('coinDisplay').textContent = data.coins || 1024;
-            } catch {
-                document.getElementById('nftCount').textContent = '42';
-                document.getElementById('memberCount').textContent = '128';
-                document.getElementById('serverCount').textContent = '8';
-                document.getElementById('coinDisplay').textContent = '1024';
-            }
-        }
-        loadStats();
-        setInterval(loadStats, 30000);
     </script>
 
 </body>
