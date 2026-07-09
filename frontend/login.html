@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS NFT – Connexion</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="wrap nav">
+            <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Accueil</a>
+                <a href="login.html" class="active">Connexion</a>
+                <a href="bourse.html">Bourse</a>
+                <a href="activate.html">Activer</a>
+            </div>
+            <div class="nav-right">
+                <button class="nav-toggle" id="navToggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="wrap" style="padding:60px 0;max-width:440px;margin:0 auto;">
+        <div class="card" style="padding:40px;">
+            <div style="text-align:center;margin-bottom:24px;">
+                <div style="font-size:48px;">🔐</div>
+                <h1 style="font-size:28px;font-weight:700;margin-top:8px;">Connexion</h1>
+                <p style="color:var(--text-dim);font-size:14px;">Connecte-toi avec les identifiants reçus par le bot.</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="user_xxxx@atlasclient.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="••••••••" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </form>
+
+            <div id="message" style="margin-top:16px;text-align:center;font-size:14px;"></div>
+
+            <div style="margin-top:20px;text-align:center;color:var(--text-dim);font-size:13px;">
+                Pas de compte ? Utilise <span style="color:var(--blue);">/create</span> sur Discord.
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-row">
+            <span>© 2026 ATLAS NFT — plateforme communautaire</span>
+            <span>🔒 Connexion sécurisée</span>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation mobile
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Connexion
+        const API_BASE = 'https://atlas-portal-exln.onrender.com/api';
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const message = document.getElementById('message');
+
+            message.innerHTML = '⏳ Connexion en cours...';
+            message.style.color = 'var(--text-dim)';
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('atlas_token', data.token);
+                    localStorage.setItem('atlas_user', JSON.stringify(data.user));
+                    message.innerHTML = '✅ Connexion réussie ! Redirection...';
+                    message.style.color = 'var(--green)';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    message.innerHTML = '❌ ' + (data.error || 'Erreur de connexion');
+                    message.style.color = 'var(--red)';
+                }
+            } catch (err) {
+                message.innerHTML = '❌ Erreur serveur. Réessaie plus tard.';
+                message.style.color = 'var(--red)';
+                console.error(err);
+            }
+        });
+    </script>
+
+</body>
+</html>
