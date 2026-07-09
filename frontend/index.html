@@ -1,24 +1,122 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATLAS Portal – Connexion</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS NFT – La Bourse des communautés</title>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h1>🖤 ATLAS Portal</h1>
-            <p>Connecte-toi avec les identifiants reçus par le bot.</p>
-            <form id="loginForm">
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Mot de passe" required>
-                <button type="submit">Se connecter</button>
-            </form>
-            <div id="message" class="message"></div>
+
+    <header class="site-header">
+        <div class="wrap nav">
+            <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="active">Accueil</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bourse.html">Bourse</a>
+                <a href="redeem.html">Activer</a>
+            </div>
+            <div class="nav-right">
+                <div class="coin-pill">
+                    <span class="coin-dot"></span>
+                    <span id="coinDisplay">0</span>
+                    <span class="muted">coins</span>
+                </div>
+                <button class="nav-toggle" id="navToggle">☰</button>
+            </div>
         </div>
-    </div>
-    <script src="js/app.js"></script>
+    </header>
+
+    <section class="hero">
+        <div class="wrap hero-grid">
+            <div>
+                <p class="eyebrow" style="color:var(--blue);font-weight:700;">🔹 ATLAS NFT</p>
+                <h1>Chaque serveur<br />a son <em>cours</em>.</h1>
+                <p class="lead">
+                    ATLAS NFT transforme les communautés Discord en actifs négociables.
+                    Collectionnez, investissez, et suivez l’évolution en temps réel.
+                </p>
+                <div class="hero-cta">
+                    <a href="redeem.html" class="btn btn-primary">Activer un code</a>
+                    <a href="bourse.html" class="btn btn-ghost">Consulter la Bourse</a>
+                </div>
+            </div>
+            <div class="card" style="padding:28px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;text-align:center;">
+                    <div>
+                        <div class="num" style="font-size:32px;font-family:'JetBrains Mono',monospace;color:var(--blue);" id="nftCount">0</div>
+                        <div style="color:var(--text-dim);font-size:12px;">NFT en circulation</div>
+                    </div>
+                    <div>
+                        <div class="num" style="font-size:32px;font-family:'JetBrains Mono',monospace;color:var(--gold);" id="memberCount">0</div>
+                        <div style="color:var(--text-dim);font-size:12px;">Membres</div>
+                    </div>
+                    <div>
+                        <div class="num" style="font-size:32px;font-family:'JetBrains Mono',monospace;color:var(--text);" id="serverCount">0</div>
+                        <div style="color:var(--text-dim);font-size:12px;">Serveurs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="wrap" style="padding:40px 0;">
+        <h2 style="font-size:28px;font-weight:700;margin-bottom:24px;">📊 Les éditions disponibles</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+            <div class="card" style="text-align:center;border-top:3px solid var(--blue);">
+                <div style="font-size:48px;margin:10px 0;">🔵</div>
+                <h3 style="font-size:20px;">Édition Bleue</h3>
+                <p style="color:var(--text-dim);font-size:14px;">Accès aux salons débutants</p>
+                <p style="font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--blue);margin-top:12px;">180 coins</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--gold);">
+                <div style="font-size:48px;margin:10px 0;">🟡</div>
+                <h3 style="font-size:20px;">Édition Or</h3>
+                <p style="color:var(--text-dim);font-size:14px;">Accès prioritaire, multiplicateur x1.5</p>
+                <p style="font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--gold);margin-top:12px;">1 240 coins</p>
+            </div>
+            <div class="card" style="text-align:center;border-top:3px solid var(--red);">
+                <div style="font-size:48px;margin:10px 0;">🔴</div>
+                <h3 style="font-size:20px;">Édition Rouge</h3>
+                <p style="color:var(--text-dim);font-size:14px;">Évènements limités, badge exclusif</p>
+                <p style="font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--red);margin-top:12px;">610 coins</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-row">
+            <span>© 2026 ATLAS NFT — plateforme communautaire</span>
+            <span>Données en temps réel · 24h/24</span>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation mobile
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Stats simulées (à remplacer par API)
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                document.getElementById('nftCount').textContent = data.nfts || 42;
+                document.getElementById('memberCount').textContent = data.members || 128;
+                document.getElementById('serverCount').textContent = data.servers || 8;
+                document.getElementById('coinDisplay').textContent = data.coins || 1024;
+            } catch {
+                document.getElementById('nftCount').textContent = '42';
+                document.getElementById('memberCount').textContent = '128';
+                document.getElementById('serverCount').textContent = '8';
+                document.getElementById('coinDisplay').textContent = '1024';
+            }
+        }
+        loadStats();
+        setInterval(loadStats, 30000);
+    </script>
+
 </body>
 </html>
