@@ -1,25 +1,156 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATLAS Portal – Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS NFT – Tableau de bord</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h1>🖤 Tableau de bord</h1>
-            <p>Bienvenue, <span id="userEmail"></span> 👋</p>
-            <hr>
-            <div id="info">
-                <p><strong>Token :</strong> <span id="userToken">Aucun</span></p>
-                <p><strong>Statut :</strong> <span id="userStatus">Non activé</span></p>
+
+    <header class="site-header">
+        <div class="wrap nav">
+            <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Accueil</a>
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="bourse.html">Bourse</a>
+                <a href="redeem.html">Activer</a>
             </div>
-            <a href="activate.html" class="btn">Activer un token</a>
-            <button onclick="logout()" class="btn btn-danger">Se déconnecter</button>
+            <div class="nav-right">
+                <div class="coin-pill">
+                    <span class="coin-dot"></span>
+                    <span id="coinDisplay">0</span>
+                    <span class="muted">coins</span>
+                </div>
+                <button class="nav-toggle" id="navToggle">☰</button>
+            </div>
         </div>
-    </div>
+    </header>
+
+    <section class="wrap" style="padding:40px 0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+            <div>
+                <p class="eyebrow" style="color:var(--blue);font-weight:700;">👤 PORTEFEUILLE</p>
+                <h1 style="font-size:clamp(28px,3.4vw,40px);font-weight:700;">Bienvenue, <span id="userName">Utilisateur</span></h1>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <span class="badge badge-blue">🪙 <span id="userCoins">0</span> coins</span>
+                <span class="badge badge-gold">🎴 <span id="userNFTs">0</span> NFT</span>
+            </div>
+        </div>
+
+        <!-- Grille de stats -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px;">
+            <div class="card" style="padding:20px;text-align:center;">
+                <div style="font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:var(--blue);" id="statNFT">0</div>
+                <div style="color:var(--text-dim);font-size:12px;">NFT possédés</div>
+            </div>
+            <div class="card" style="padding:20px;text-align:center;">
+                <div style="font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:var(--gold);" id="statCoins">0</div>
+                <div style="color:var(--text-dim);font-size:12px;">Coins ATLAS</div>
+            </div>
+            <div class="card" style="padding:20px;text-align:center;">
+                <div style="font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:var(--green);" id="statInvest">0</div>
+                <div style="color:var(--text-dim);font-size:12px;">Investissements</div>
+            </div>
+            <div class="card" style="padding:20px;text-align:center;">
+                <div style="font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:var(--text);" id="statValue">0</div>
+                <div style="color:var(--text-dim);font-size:12px;">Valeur totale (coins)</div>
+            </div>
+        </div>
+
+        <!-- NFT possédés -->
+        <div style="margin-top:40px;">
+            <h2 style="font-size:22px;font-weight:700;margin-bottom:16px;">🎴 Mes NFT</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;" id="nftList">
+                <!-- Généré par JS -->
+            </div>
+        </div>
+
+        <!-- Graphique -->
+        <div style="margin-top:40px;">
+            <h2 style="font-size:22px;font-weight:700;margin-bottom:16px;">📈 Évolution de la valeur</h2>
+            <div class="card" style="padding:20px;height:280px;">
+                <canvas id="valueChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-row">
+            <span>© 2026 ATLAS NFT — plateforme communautaire</span>
+            <span>Données en temps réel · 24h/24</span>
+        </div>
+    </footer>
+
     <script src="js/app.js"></script>
+    <script>
+        // Navigation
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Données simulées (remplacer par API)
+        const user = JSON.parse(localStorage.getItem('atlas_user') || '{"email":"user@atlasclient.com","coins":2480,"nfts":7}');
+        document.getElementById('userName').textContent = user.email.split('@')[0] || 'Utilisateur';
+        document.getElementById('userCoins').textContent = user.coins || 0;
+        document.getElementById('userNFTs').textContent = user.nfts?.length || 0;
+
+        document.getElementById('statNFT').textContent = user.nfts?.length || 0;
+        document.getElementById('statCoins').textContent = user.coins || 0;
+        document.getElementById('statInvest').textContent = 3;
+        document.getElementById('statValue').textContent = (user.coins || 0) + 1200;
+
+        // NFT fictifs
+        const nftData = [
+            { edition: 'Or', tokenId: 'A7F3', value: 1240 },
+            { edition: 'Bleue', tokenId: 'B2C9', value: 180 },
+            { edition: 'Rouge', tokenId: 'D4E1', value: 610 }
+        ];
+        const nftList = document.getElementById('nftList');
+        nftData.forEach(n => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.style.cssText = 'padding:16px;text-align:center;';
+            div.innerHTML = `
+                <div style="font-size:32px;">${n.edition === 'Or' ? '🟡' : n.edition === 'Bleue' ? '🔵' : '🔴'}</div>
+                <div style="font-weight:700;margin-top:8px;">${n.edition}</div>
+                <div style="color:var(--text-dim);font-size:12px;">#${n.tokenId}</div>
+                <div style="font-family:'JetBrains Mono';font-weight:700;font-size:18px;margin-top:8px;color:${n.edition === 'Or' ? 'var(--gold)' : n.edition === 'Bleue' ? 'var(--blue)' : 'var(--red)'};">${n.value} coins</div>
+            `;
+            nftList.appendChild(div);
+        });
+
+        // Graphique
+        new Chart(document.getElementById('valueChart'), {
+            type: 'line',
+            data: {
+                labels: ['J-6', 'J-5', 'J-4', 'J-3', 'J-2', 'J-1', 'Aujourd\'hui'],
+                datasets: [{
+                    label: 'Valeur totale',
+                    data: [980, 1020, 1150, 1200, 1300, 1420, 1500],
+                    borderColor: '#00D4FF',
+                    backgroundColor: 'rgba(0,212,255,0.08)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#7A8194', font: { size: 10 } } },
+                    y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7A8194', font: { size: 10 } } }
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>
