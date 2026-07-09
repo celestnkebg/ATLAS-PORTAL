@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS NFT – Détail</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="wrap nav">
+            <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Accueil</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bourse.html">Bourse</a>
+                <a href="redeem.html">Activer</a>
+            </div>
+            <div class="nav-right">
+                <div class="coin-pill">
+                    <span class="coin-dot"></span>
+                    <span id="coinDisplay">0</span>
+                    <span class="muted">coins</span>
+                </div>
+                <button class="nav-toggle" id="navToggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="wrap" style="padding:40px 0;">
+        <a href="dashboard.html" style="color:var(--text-dim);text-decoration:none;font-size:14px;">⬅ Retour au tableau de bord</a>
+        <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:40px;margin-top:20px;">
+            <div class="card" style="text-align:center;padding:40px;">
+                <div style="font-size:80px;">🟡</div>
+                <h2 style="font-size:24px;font-weight:700;margin-top:12px;">Édition Or</h2>
+                <div style="font-family:'JetBrains Mono';font-size:32px;font-weight:700;color:var(--gold);">1 240 coins</div>
+                <span class="perf perf-up" style="font-size:16px;">▲ 5,4% · 7 jours</span>
+                <div style="margin-top:16px;display:flex;gap:12px;justify-content:center;">
+                    <span class="badge badge-gold">#A7F3</span>
+                    <span class="badge badge-blue">Propriétaire: toi</span>
+                </div>
+            </div>
+            <div>
+                <div class="card" style="padding:20px;">
+                    <div style="height:260px;">
+                        <canvas id="detailChart"></canvas>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+                    <div class="card" style="padding:16px;text-align:center;">
+                        <div style="color:var(--text-dim);font-size:12px;">Minté le</div>
+                        <div style="font-weight:600;">12 mars 2025</div>
+                    </div>
+                    <div class="card" style="padding:16px;text-align:center;">
+                        <div style="color:var(--text-dim);font-size:12px;">Serveur</div>
+                        <div style="font-weight:600;">Nébula RP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-row">
+            <span>© 2026 ATLAS NFT — plateforme communautaire</span>
+            <span>Données en temps réel · 24h/24</span>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        new Chart(document.getElementById('detailChart'), {
+            type: 'line',
+            data: {
+                labels: ['J-13', 'J-11', 'J-9', 'J-7', 'J-5', 'J-3', 'Auj.'],
+                datasets: [{
+                    label: 'Valeur',
+                    data: [960, 990, 1030, 1080, 1150, 1190, 1240],
+                    borderColor: '#C9A84C',
+                    backgroundColor: 'rgba(201,168,76,0.08)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#7A8194', font: { size: 10 } } },
+                    y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7A8194', font: { size: 10 } } }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
