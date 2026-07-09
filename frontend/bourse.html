@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS NFT – Bourse</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="wrap nav">
+            <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Accueil</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bourse.html" class="active">Bourse</a>
+                <a href="redeem.html">Activer</a>
+            </div>
+            <div class="nav-right">
+                <div class="coin-pill">
+                    <span class="coin-dot"></span>
+                    <span id="coinDisplay">0</span>
+                    <span class="muted">coins</span>
+                </div>
+                <button class="nav-toggle" id="navToggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="wrap" style="padding:40px 0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+            <div>
+                <p class="eyebrow" style="color:var(--gold);font-weight:700;">📊 MARCHÉ</p>
+                <h1 style="font-size:clamp(28px,3.4vw,40px);font-weight:700;">Bourse des serveurs</h1>
+            </div>
+            <span class="badge badge-green">🟢 Marché ouvert</span>
+        </div>
+
+        <!-- Tableau des serveurs -->
+        <div class="card" style="padding:8px 8px 20px;margin-top:20px;overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Serveur</th>
+                        <th>👥 Membres</th>
+                        <th>💬 Messages</th>
+                        <th>📊 Parts</th>
+                        <th>💰 Cours</th>
+                        <th>📈 Var.</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="serverTable">
+                    <!-- Généré par JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Graphique -->
+        <div style="margin-top:40px;">
+            <h2 style="font-size:22px;font-weight:700;margin-bottom:16px;">📈 Évolution d'un serveur</h2>
+            <div class="card" style="padding:20px;height:260px;">
+                <canvas id="serverChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-row">
+            <span>© 2026 ATLAS NFT — plateforme communautaire</span>
+            <span>Données en temps réel · 24h/24</span>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Données simulées
+        const servers = [
+            { name: 'Nébula RP', members: 4210, messages: 6840, parts: 312, price: 412, change: '+3.2%', up: true },
+            { name: 'Kaïros Anime', members: 2980, messages: 5120, parts: 190, price: 205, change: '+0.6%', up: true },
+            { name: 'Atelier Pixel', members: 1340, messages: 1980, parts: 640, price: 88, change: '-1.1%', up: false },
+            { name: 'Halte Café', members: 860, messages: 910, parts: 88, price: 54, change: '-2.8%', up: false },
+            { name: 'Forge & Code', members: 3105, messages: 4460, parts: 254, price: 329, change: '+0.2%', up: true }
+        ];
+
+        const table = document.getElementById('serverTable');
+        servers.forEach(s => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${s.name}</strong></td>
+                <td style="font-family:'JetBrains Mono';">${s.members}</td>
+                <td style="font-family:'JetBrains Mono';">${s.messages}</td>
+                <td style="font-family:'JetBrains Mono';">${s.parts}</td>
+                <td style="font-family:'JetBrains Mono';">${s.price} c</td>
+                <td><span class="perf ${s.up ? 'perf-up' : 'perf-down'}">${s.up ? '▲' : '▼'} ${s.change}</span></td>
+                <td>
+                    <button class="btn btn-primary" style="padding:6px 14px;font-size:12px;">Acheter</button>
+                    <button class="btn btn-ghost" style="padding:6px 14px;font-size:12px;">Vendre</button>
+                </td>
+            `;
+            table.appendChild(tr);
+        });
+
+        new Chart(document.getElementById('serverChart'), {
+            type: 'line',
+            data: {
+                labels: ['J-6', 'J-5', 'J-4', 'J-3', 'J-2', 'J-1', 'Auj.'],
+                datasets: [
+                    { label: 'Membres', data: [3820, 3900, 3960, 4020, 4080, 4150, 4210], borderColor: '#00D4FF', fill: false, tension: 0.3, pointRadius: 2 },
+                    { label: 'Messages', data: [5200, 5600, 5300, 6100, 6400, 6600, 6840], borderColor: '#C9A84C', fill: false, tension: 0.3, pointRadius: 2, borderDash: [4, 4] }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#ECEAE3' } }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#7A8194', font: { size: 10 } } },
+                    y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7A8194', font: { size: 10 } } }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
