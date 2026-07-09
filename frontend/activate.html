@@ -1,23 +1,85 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATLAS Portal – Activation</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS NFT – Activer un code</title>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h1>🔑 Activer ton token</h1>
-            <p>Entre le token reçu par le bot pour lier ton compte au serveur.</p>
-            <input type="text" id="tokenInput" placeholder="Token (ex: CODE-XXXX-XXXX)" style="width:100%;padding:10px;margin:10px 0;">
-            <button onclick="activateToken()" class="btn">Activer</button>
-            <div id="message" class="message"></div>
-            <br>
-            <a href="dashboard.html">⬅ Retour au tableau de bord</a>
+
+    <header class="site-header">
+        <div class="wrap nav">
+            <a href="index.html" class="brand">🖤 ATLAS<span>NFT</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Accueil</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bourse.html">Bourse</a>
+                <a href="redeem.html" class="active">Activer</a>
+            </div>
+            <div class="nav-right">
+                <div class="coin-pill">
+                    <span class="coin-dot"></span>
+                    <span id="coinDisplay">0</span>
+                    <span class="muted">coins</span>
+                </div>
+                <button class="nav-toggle" id="navToggle">☰</button>
+            </div>
         </div>
-    </div>
-    <script src="js/app.js"></script>
+    </header>
+
+    <section class="wrap" style="padding:60px 0;max-width:520px;margin:0 auto;">
+        <div class="card" style="padding:40px;text-align:center;">
+            <div style="font-size:48px;margin-bottom:12px;">🔑</div>
+            <h1 style="font-size:28px;font-weight:700;">Activer un code</h1>
+            <p style="color:var(--text-dim);margin:8px 0 24px;">
+                Entre le code reçu pour recevoir ton NFT.
+            </p>
+            <form id="redeemForm">
+                <div class="form-group">
+                    <input type="text" id="codeInput" placeholder="Code (ex: OR-XXXX-XXXX)" style="text-align:center;font-family:'JetBrains Mono';letter-spacing:2px;" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">🔓 Activer</button>
+            </form>
+            <div id="message" style="margin-top:16px;font-size:14px;"></div>
+            <div style="margin-top:20px;color:var(--text-dim);font-size:13px;">
+                <span class="badge badge-blue">OR-1234</span>
+                <span class="badge badge-gold">BLEUE-9F3K</span>
+                <span class="badge badge-red">ROUGE-A7D2</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-row">
+            <span>© 2026 ATLAS NFT — plateforme communautaire</span>
+            <span>Besoin d'aide ? Contacte le support</span>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        document.getElementById('redeemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('codeInput').value.trim();
+            const msg = document.getElementById('message');
+
+            if (!code) {
+                msg.innerHTML = '<span style="color:var(--red);">❌ Entre un code valide.</span>';
+                return;
+            }
+
+            if (code.length >= 8) {
+                msg.innerHTML = `<span style="color:var(--green);">✅ Code « ${code} » activé ! NFT ajouté à ton portefeuille.</span>`;
+                document.getElementById('codeInput').value = '';
+            } else {
+                msg.innerHTML = '<span style="color:var(--red);">❌ Code invalide. Vérifie la saisie.</span>';
+            }
+        });
+    </script>
+
 </body>
 </html>
